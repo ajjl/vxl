@@ -7,7 +7,7 @@
 
 #include <vcl_cstddef.h>
 #include <vcl_cassert.h>
-#include <vcl_map.txx>
+#include <vcl_map.hxx>
 #include <vcl_cstdlib.h> // abort()
 #include <vsl/vsl_binary_explicit_io.h>
 
@@ -647,7 +647,7 @@ void* vsl_b_istream::get_serialisation_pointer(unsigned long serial_number) cons
         serialisation_records_.find(serial_number);
   if (entry == serialisation_records_.end())
   {
-    return 0;
+    return VXL_NULLPTR;
   }
   else
   {

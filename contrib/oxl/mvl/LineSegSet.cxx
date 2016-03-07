@@ -10,7 +10,7 @@
 #include <vcl_iostream.h>
 #include <vcl_fstream.h>
 #include <vcl_vector.h>
-#include <vcl_vector.txx>
+#include <vcl_vector.hxx>
 
 #include <mvl/ImageMetric.h>
 #include <mvl/HomgPoint2D.h>
@@ -19,7 +19,7 @@
 LineSegSet::LineSegSet():
   hlines_(0)
 {
-  conditioner_ = 0;
+  conditioner_ = VXL_NULLPTR;
 }
 
 // Copy ctor
@@ -163,5 +163,5 @@ HomgLineSeg2D* LineSegSet::pick_line(double x, double y)
   if (i >= 0)
     return &hlines_[i];
   else
-    return 0;
+    return VXL_NULLPTR;
 }

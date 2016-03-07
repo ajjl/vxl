@@ -18,13 +18,7 @@
 // complex over other number types.
 
 
-// ---------- Visual Studio 9
-#if defined(VCL_VC_9)
-# include "win32-vc9/vcl_complex.h"
-// ---------- ISO
-#else
-# include "iso/vcl_complex.h"
-#endif
+#include "iso/vcl_complex.h"
 
 
 # if !VCL_COMPLEX_POW_WORKS
@@ -70,8 +64,8 @@ template <class T> inline vcl_complex<T>
 //--------------------------------------------------------------------------------
 
 // bogus instantiation macro.
-#define VCL_COMPLEX_INSTANTIATE(T) extern "you must include vcl_complex.txx instead"
+#define VCL_COMPLEX_INSTANTIATE(T) extern "you must include vcl_complex.hxx instead"
 
-#include "vcl_complex.txx"
+#include "vcl_complex.hxx"
 
 #endif // vcl_complex_h_

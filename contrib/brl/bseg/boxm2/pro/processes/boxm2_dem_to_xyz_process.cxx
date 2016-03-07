@@ -108,7 +108,7 @@ bool boxm2_dem_to_xyz_process(bprb_func_process& pro)
 
   vil_image_resource_sptr dem_res = vil_load_image_resource(geotiff_fname.c_str());
 
-  vpgl_geo_camera* geocam = 0;
+  vpgl_geo_camera* geocam = VXL_NULLPTR;
   if (cam && (geocam = dynamic_cast<vpgl_geo_camera*> (cam.ptr())) ) {
     vcl_cout << "Using the loaded camera!\n";
   }
@@ -287,7 +287,7 @@ bool boxm2_shadow_heights_to_xyz_process(bprb_func_process& pro)
   }
 
   vil_image_resource_sptr dem_res = vil_load_image_resource(geotiff_fname.c_str());
-  vpgl_geo_camera* geocam = 0;
+  vpgl_geo_camera* geocam = VXL_NULLPTR;
   vpgl_geo_camera::init_geo_camera(dem_res, lvcs, geocam);
 
   vgl_box_3d<double> scene_bbox = scene->bounding_box();
@@ -397,13 +397,13 @@ bool boxm2_dem_to_xyz_process2(bprb_func_process& pro)
   boxm2_scene_sptr scene = pro.get_input<boxm2_scene_sptr>(0);
   vpgl_lvcs_sptr lvcs = new vpgl_lvcs(scene->lvcs());
   vcl_string geotiff_fname = pro.get_input<vcl_string>(1);
-  double geoid_height = pro.get_input<double>(2); // TODO: unused!
+  //double geoid_height = pro.get_input<double>(2); // TODO: unused!
   vpgl_camera_double_sptr cam = pro.get_input<vpgl_camera_double_sptr>(3);
-  float fill_in_value = pro.get_input<float>(4); // TODO: unused!
+  //float fill_in_value = pro.get_input<float>(4); // TODO: unused!
 
   vil_image_resource_sptr dem_res = vil_load_image_resource(geotiff_fname.c_str());
 
-  vpgl_geo_camera* geocam = 0;
+  vpgl_geo_camera* geocam = VXL_NULLPTR;
   if ( cam && (geocam = dynamic_cast<vpgl_geo_camera*> (cam.ptr())) ) {
     vcl_cout << "Using the loaded camera!\n";
   }

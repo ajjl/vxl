@@ -20,8 +20,8 @@ void bgui_graph_tableau::init()
   easy_->set_foreground(0.0, 1.0f, 0.0);
   easy_->set_line_width(2.0f);
   n_ = 0;
-  pos_ = 0;
-  vals_ = 0;
+  pos_ = VXL_NULLPTR;
+  vals_ = VXL_NULLPTR;
   tic_length_ = 10.0f;
   left_offset_ = 75;
   top_offset_ = 20;
@@ -33,7 +33,7 @@ void bgui_graph_tableau::init()
 
 bgui_graph_tableau::bgui_graph_tableau(const unsigned gwidth,
                                        const unsigned gheight) :
-  graph_width_(gwidth), graph_height_(gheight), plot_(0)
+  graph_width_(gwidth), graph_height_(gheight), plot_(VXL_NULLPTR)
 {   this->init(); }
 
 // Destructor.
@@ -124,11 +124,11 @@ void bgui_graph_tableau::update(vcl_vector<double> const& pos,
   for (unsigned i = 0; i<n_; ++i)
   {
     pos_[i]=static_cast<float>(pos[i]);
-    xmin_ = vnl_math::min(xmin_, pos_[i]);
-    xmax_ = vnl_math::max(xmax_, pos_[i]);
+    xmin_ = std::min(xmin_, pos_[i]);
+    xmax_ = std::max(xmax_, pos_[i]);
     vals_[i]=static_cast<float>(vals[i]);
-    ymin_ = vnl_math::min(ymin_, vals_[i]);
-    ymax_ = vnl_math::max(ymax_, vals_[i]);
+    ymin_ = std::min(ymin_, vals_[i]);
+    ymax_ = std::max(ymax_, vals_[i]);
   }
   compute_scale();
   draw_graph();
@@ -144,11 +144,11 @@ void bgui_graph_tableau::update(vcl_vector<float> const& pos,
   for (unsigned i = 0; i<n_; ++i)
   {
     pos_[i]=pos[i];
-    xmin_ = vnl_math::min(xmin_, pos_[i]);
-    xmax_ = vnl_math::max(xmax_, pos_[i]);
+    xmin_ = std::min(xmin_, pos_[i]);
+    xmax_ = std::max(xmax_, pos_[i]);
     vals_[i]=vals[i];
-    ymin_ = vnl_math::min(ymin_, vals_[i]);
-    ymax_ = vnl_math::max(ymax_, vals_[i]);
+    ymin_ = std::min(ymin_, vals_[i]);
+    ymax_ = std::max(ymax_, vals_[i]);
   }
   compute_scale();
   draw_graph();
@@ -173,10 +173,10 @@ void bgui_graph_tableau::update(vcl_vector<vcl_vector<double> > const& pos,
   for (unsigned p = 0; p<n_plots_; ++p)
     for (unsigned i = 0; i<n_; ++i)
     {
-      xmin = vnl_math::min(xmin, pos[p][i]);
-      xmax = vnl_math::max(xmax, pos[p][i]);
-      ymin = vnl_math::min(ymin, vals[p][i]);
-      ymax = vnl_math::max(ymax, vals[p][i]);
+      xmin = std::min(xmin, pos[p][i]);
+      xmax = std::max(xmax, pos[p][i]);
+      ymin = std::min(ymin, vals[p][i]);
+      ymax = std::max(ymax, vals[p][i]);
     }
   xmin_ = static_cast<float>(xmin);
   xmax_ = static_cast<float>(xmax);
@@ -276,7 +276,7 @@ void bgui_graph_tableau::draw_graph()
     easy_->remove(plot_);
     tt_->clear();
     delete plot_;
-    plot_ = 0;
+    plot_ = VXL_NULLPTR;
   }
   for (unsigned i = 0; i<n_; ++i)
   {
@@ -330,7 +330,7 @@ void bgui_graph_tableau::rem()
   {
     easy_->remove(plot_);
     //delete plot_;
-    plot_ = 0;
+    plot_ = VXL_NULLPTR;
   }
   for (vcl_vector<vgui_soview2D_lineseg*>::iterator cit = xtics_.begin();
        cit!=xtics_.end(); ++cit)
@@ -357,12 +357,12 @@ void bgui_graph_tableau::del()
   if (pos_)
   {
     delete [] pos_;
-    pos_ =0;
+    pos_ =VXL_NULLPTR;
   }
   if (vals_)
   {
     delete [] vals_;
-    vals_ = 0;
+    vals_ = VXL_NULLPTR;
   }
 }
 

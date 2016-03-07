@@ -126,7 +126,6 @@ int main(int argc,  char** argv)
         unsigned vv = (unsigned)vcl_floor(v + 0.5);
         if (uu > 0 && vv > 0 && uu < nlcd_imgs[k].first.ni() && vv < nlcd_imgs[k].first.nj()) {
           label = (nlcd_imgs[k].first)(uu, vv);
-          nlcd_found = true;
           break;
         }
       }
@@ -189,9 +188,7 @@ int main(int argc,  char** argv)
       vil_rgb<vxl_byte> class_color = lidar_class_img(i,j);
       float class_prob = lidar_prob_img(i,j);
 
-      if (pixel_id == water_id && class_color == pier_color && elev > 1.0f)
-        pixel_id = pier_id;
-      else if (pixel_id == sand_id && class_color == pier_color && elev > 1.0f && class_prob > pier_prob_thres) {
+      if (pixel_id == sand_id && class_color == pier_color && elev > 1.0f && class_prob > pier_prob_thres) {
 
         // enforce water neighborhood
         unsigned cnt = 0;
@@ -262,7 +259,6 @@ int main(int argc,  char** argv)
     vil_rgb<vxl_byte> pixel_color = building_pixel_color;
 
     if (heights[ii] > 20) {  // specify the category
-      label = volm_label_table::BUILDING_TALL;
       pixel_id = building_tall_id;
       pixel_color = building_tall_pixel_color;
     }

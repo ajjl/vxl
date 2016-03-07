@@ -4,7 +4,7 @@
 include_directories( ${BRL_INCLUDE_DIR}/bbas )
 
 set(vsph_sources
-    vsph_view_sphere.h       vsph_view_sphere.txx
+    vsph_view_sphere.h       vsph_view_sphere.hxx
     vsph_view_point.h
     vsph_spherical_coord.h   vsph_spherical_coord.cxx     vsph_spherical_coord_sptr.h
     vsph_sph_point_3d.h      vsph_sph_point_3d.cxx
@@ -19,8 +19,8 @@ set(vsph_sources
   )
 aux_source_directory(Templates vsph_sources)
 
-add_library(vsph ${vsph_sources})
-target_link_libraries(vsph vpgl vpgl_algo vpgl_io vgl_algo vgl_io vgl vbl vnl vcl bpgl_algo bvrml)
+vxl_add_library( LIBNAME vsph LIBSRCS ${vsph_sources})
+target_link_libraries(vsph ${VXL_LIB_PREFIX}vpgl ${VXL_LIB_PREFIX}vpgl_algo ${VXL_LIB_PREFIX}vpgl_io ${VXL_LIB_PREFIX}vgl_algo ${VXL_LIB_PREFIX}vgl_io ${VXL_LIB_PREFIX}vgl ${VXL_LIB_PREFIX}vbl ${VXL_LIB_PREFIX}vnl ${VXL_LIB_PREFIX}vcl bpgl_algo bvrml)
 
 if(BUILD_TESTING)
   add_subdirectory(tests)
@@ -28,5 +28,3 @@ endif()
 
 
 
-install_targets(/lib vsph)
-INSTALL_NOBASE_HEADER_FILES(/include/vxl/contrib/brl/bbas/vsph ${vsph_sources})

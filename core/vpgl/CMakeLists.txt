@@ -13,19 +13,19 @@ set( vpgl_sources
   vpgl_export.h
   vpgl_camera.h                    vpgl_camera_double_sptr.h
                                    vpgl_camera_float_sptr.h
-  vpgl_proj_camera.h               vpgl_proj_camera.txx
-  vpgl_calibration_matrix.h        vpgl_calibration_matrix.txx
-  vpgl_perspective_camera.h        vpgl_perspective_camera.txx
-  vpgl_affine_camera.h             vpgl_affine_camera.txx
-  vpgl_fundamental_matrix.h        vpgl_fundamental_matrix.txx
-  vpgl_essential_matrix.h          vpgl_essential_matrix.txx
-  vpgl_affine_fundamental_matrix.h vpgl_affine_fundamental_matrix.txx
-  vpgl_lens_distortion.h           vpgl_lens_distortion.txx
-  vpgl_radial_distortion.h         vpgl_radial_distortion.txx
-  vpgl_poly_radial_distortion.h    vpgl_poly_radial_distortion.txx
-  vpgl_rational_camera.h           vpgl_rational_camera.txx
-  vpgl_local_rational_camera.h     vpgl_local_rational_camera.txx
-  vpgl_generic_camera.h            vpgl_generic_camera.txx
+  vpgl_proj_camera.h               vpgl_proj_camera.hxx
+  vpgl_calibration_matrix.h        vpgl_calibration_matrix.hxx
+  vpgl_perspective_camera.h        vpgl_perspective_camera.hxx
+  vpgl_affine_camera.h             vpgl_affine_camera.hxx
+  vpgl_fundamental_matrix.h        vpgl_fundamental_matrix.hxx
+  vpgl_essential_matrix.h          vpgl_essential_matrix.hxx
+  vpgl_affine_fundamental_matrix.h vpgl_affine_fundamental_matrix.hxx
+  vpgl_lens_distortion.h           vpgl_lens_distortion.hxx
+  vpgl_radial_distortion.h         vpgl_radial_distortion.hxx
+  vpgl_poly_radial_distortion.h    vpgl_poly_radial_distortion.hxx
+  vpgl_rational_camera.h           vpgl_rational_camera.hxx
+  vpgl_local_rational_camera.h     vpgl_local_rational_camera.hxx
+  vpgl_generic_camera.h            vpgl_generic_camera.hxx
   vpgl_dll.h
   vpgl_lvcs.h                      vpgl_lvcs.cxx        vpgl_lvcs_sptr.h
   vpgl_utm.h                       vpgl_utm.cxx
@@ -35,8 +35,8 @@ set( vpgl_sources
 
 aux_source_directory(Templates vpgl_sources)
 
-add_library(vpgl ${vpgl_sources})
-target_link_libraries(vpgl vnl_algo vnl vgl_algo vgl vul vsl vbl)
+vxl_add_library(LIBNAME ${VXL_LIB_PREFIX}vpgl LIBSRCS ${vpgl_sources})
+target_link_libraries(${VXL_LIB_PREFIX}vpgl ${VXL_LIB_PREFIX}vnl_algo ${VXL_LIB_PREFIX}vnl ${VXL_LIB_PREFIX}vgl_algo ${VXL_LIB_PREFIX}vgl ${VXL_LIB_PREFIX}vul ${VXL_LIB_PREFIX}vsl ${VXL_LIB_PREFIX}vbl)
 
 if( BUILD_TESTING )
   add_subdirectory(tests)
@@ -46,5 +46,3 @@ add_subdirectory(algo)
 add_subdirectory(file_formats)
 add_subdirectory(io)
 add_subdirectory(xio)
-install_targets(/lib vpgl)
-INSTALL_NOBASE_HEADER_FILES(/include/vxl/core/vpgl/ ${vpgl_sources})

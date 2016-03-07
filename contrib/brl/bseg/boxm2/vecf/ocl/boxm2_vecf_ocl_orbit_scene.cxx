@@ -284,7 +284,7 @@ void boxm2_vecf_ocl_orbit_scene::cache_cell_centers_from_anatomy_labels(){
 
 //Main constructor
 boxm2_vecf_ocl_orbit_scene::boxm2_vecf_ocl_orbit_scene(vcl_string const& scene_file, bocl_device_sptr device, boxm2_opencl_cache_sptr opencl_cache, bool is_single_instance , bool is_right ):
-  boxm2_vecf_articulated_scene(scene_file), is_right_(is_right),alpha_data_(0), app_data_(0), nobs_data_(0), sphere_(0), iris_(0), pupil_(0),device_(device),opencl_cache_(opencl_cache)
+  boxm2_vecf_articulated_scene(scene_file), is_right_(is_right),alpha_data_(VXL_NULLPTR), app_data_(VXL_NULLPTR), nobs_data_(VXL_NULLPTR), sphere_(VXL_NULLPTR), iris_(VXL_NULLPTR), pupil_(VXL_NULLPTR),device_(device),opencl_cache_(opencl_cache)
 {
 
   this->extrinsic_only_ = false; int status;
@@ -295,7 +295,7 @@ boxm2_vecf_ocl_orbit_scene::boxm2_vecf_ocl_orbit_scene(vcl_string const& scene_f
 
   boxm2_lru_cache::create(base_model_);
   is_single_instance_ = is_single_instance;
-  target_blk_ = 0;
+  target_blk_ = VXL_NULLPTR;
   target_data_extracted_ = false;
   this->compile_kernels();
   this->extract_block_data();
@@ -359,8 +359,6 @@ void boxm2_vecf_ocl_orbit_scene::rebuild(){
 void boxm2_vecf_ocl_orbit_scene::build_iris(){
   iris_cell_centers_.clear();
   iris_cell_data_index_.clear();
-  double pi = vnl_math::pi;
-  double two_pi = 2.0*pi;
   double iris_half_ang = vcl_atan(params_.iris_radius_/params_.eye_radius_);
   vgl_sphere_3d<double> sph(0.0, -params_.y_off_, 0.0, params_.eye_radius_);
   for(vcl_vector<vgl_point_3d<double> >::iterator cit = sphere_cell_centers_.begin();
@@ -384,8 +382,6 @@ void boxm2_vecf_ocl_orbit_scene::build_iris(){
 void boxm2_vecf_ocl_orbit_scene::build_pupil(){
   pupil_cell_centers_.clear();
   pupil_cell_data_index_.clear();
-  double pi = vnl_math::pi;
-  double two_pi = 2.0*pi;
   double pupil_half_ang = vcl_atan(params_.pupil_radius_/params_.eye_radius_);
   vgl_sphere_3d<double> sph(0.0, -params_.y_off_, 0.0, params_.eye_radius_);
   for(vcl_vector<vgl_point_3d<double> >::iterator cit = sphere_cell_centers_.begin();
@@ -593,9 +589,8 @@ void boxm2_vecf_ocl_orbit_scene::recreate_eyelid(){
 void boxm2_vecf_ocl_orbit_scene::build_eyelid(){
   double len = 2 * blk_->sub_block_dim().x();
   ;
-  double d_thresh = params_.neighbor_radius()*len;
   double margin = params_.eyelid_radius() * 0.15;
-  d_thresh = margin;
+  double d_thresh = margin;
   vgl_box_3d<double> bb = eyelid_geo_.bounding_box(margin);
   // cells in  box centers are in global coordinates
   vcl_vector<cell_info> ccs = blk_->cells_in_box(bb);

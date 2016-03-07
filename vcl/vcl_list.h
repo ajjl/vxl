@@ -6,8 +6,8 @@
 #include "iso/vcl_list.h"
 
 #define VCL_LIST_INSTANTIATE \
-extern "include vcl_list.txx instead"
+extern "include vcl_list.hxx instead"
 
-#include "vcl_list.txx"
+#include "vcl_list.hxx"
 
 #endif // vcl_list_h_

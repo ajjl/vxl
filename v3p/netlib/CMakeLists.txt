@@ -7,12 +7,10 @@ set(netlib_sources
      triangle.c triangle.h
    )
 
-add_library( netlib ${netlib_sources} )
-install_targets( /lib netlib )
-install_files( /include/vxl/v3p/netlib .h triangle )
+vxl_add_library(LIBNAME ${VXL_LIB_PREFIX}netlib LIBSRCS ${netlib_sources} )
 
 if(UNIX)
-  target_link_libraries( netlib m )
+  target_link_libraries( ${VXL_LIB_PREFIX}netlib m )
 endif()
 
 # Allow sources in subdirectories to see the include files.
@@ -454,11 +452,9 @@ if(CMAKE_COMPILER_IS_GNUCC)
 endif()
 
 # Create a netlib library with mangled symbols.
-add_library(v3p_netlib ${v3p_netlib_sources})
-install_targets( /lib v3p_netlib )
-INSTALL_NOBASE_HEADER_FILES(/include/vxl/v3p/netlib ${v3p_netlib_sources})
+vxl_add_library( LIBNAME ${VXL_LIB_PREFIX}v3p_netlib LIBSRCS ${v3p_netlib_sources})
 if(UNIX)
-  target_link_libraries( v3p_netlib m )
+  target_link_libraries( ${VXL_LIB_PREFIX}v3p_netlib m )
 endif()
 
 if(BUILD_TESTING)

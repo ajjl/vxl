@@ -461,7 +461,6 @@ compute_es_params_use_simple_gradient_descent( bool use_lookup_table ){
     // dstep = 0.1;
     dstep_k0 = 0.1;
     dstep_len = 0.1;
-    k0_len_initialized = true;
   }
 
   // perform a simple gradient descent to find the real solution
@@ -601,7 +600,6 @@ compute_es_params_use_levenberg_marquardt(bool use_lookup_table ){
     //From here on, normlize the parameters and use these to perform the optimization
     k0_len_estimate.put(0, biarc_estimate.k1()*d);
     k0_len_estimate.put(1, biarc_estimate.len()/d);
-    k0_len_initialized = true;
   }
 
 
@@ -651,7 +649,7 @@ const vcl_string bvgl_eulerspiral_lookup_table::
 file_name = vcl_string("bvgl_eulerspiral_lookup_table.bvl");
 
 //: static bvgl_eulerspiral_lookup_table instance
-bvgl_eulerspiral_lookup_table* bvgl_eulerspiral_lookup_table::instance_ = 0;
+bvgl_eulerspiral_lookup_table* bvgl_eulerspiral_lookup_table::instance_ = VXL_NULLPTR;
 
 //: Return the pointer to the only instance of the class
 bvgl_eulerspiral_lookup_table *bvgl_eulerspiral_lookup_table::instance(){
@@ -777,12 +775,12 @@ look_up(double start_angle, double end_angle, double* k0, double* gamma, double*
   x12 = this->k0_table_.at(start_index_low).at(end_index_high);
   x22 = this->k0_table_.at(start_index_high).at(end_index_high);
   *k0 = (1-a)*(1-b)*x11 + a*(1-b)*x21 + (1-a)*b*x12 + a*b*x22;
-  *k0_max_error = vnl_math::max(
-    vnl_math::max((double)x11, (double)x21),
-    vnl_math::max((double)x12, (double)x22)
-    ) - vnl_math::min(
-    vnl_math::min((double)x11, (double)x21),
-    vnl_math::min((double)x12,(double)x22)
+  *k0_max_error = std::max(
+    std::max((double)x11, (double)x21),
+    std::max((double)x12, (double)x22)
+    ) - std::min(
+    std::min((double)x11, (double)x21),
+    std::min((double)x12,(double)x22)
     );
 
   x11 = this->gamma_table_.at(start_index_low).at(end_index_low);
@@ -790,12 +788,12 @@ look_up(double start_angle, double end_angle, double* k0, double* gamma, double*
   x12 = this->gamma_table_.at(start_index_low).at(end_index_high);
   x22 = this->gamma_table_.at(start_index_high).at(end_index_high);
   *gamma = (1-a)*(1-b)*x11 + a*(1-b)*x21 + (1-a)*b*x12 + a*b*x22;
-  *gamma_max_error = vnl_math::max(
-    vnl_math::max((double)x11, (double)x21),
-    vnl_math::max((double)x12, (double)x22)
-    ) - vnl_math::min(
-    vnl_math::min((double)x11, (double)x21),
-    vnl_math::min((double)x12,(double)x22)
+  *gamma_max_error = std::max(
+    std::max((double)x11, (double)x21),
+    std::max((double)x12, (double)x22)
+    ) - std::min(
+    std::min((double)x11, (double)x21),
+    std::min((double)x12,(double)x22)
     );
 
   x11 = this->len_table_.at(start_index_low).at(end_index_low);
@@ -803,12 +801,12 @@ look_up(double start_angle, double end_angle, double* k0, double* gamma, double*
   x12 = this->len_table_.at(start_index_low).at(end_index_high);
   x22 = this->len_table_.at(start_index_high).at(end_index_high);
   *len = (1-a)*(1-b)*x11 + a*(1-b)*x21 + (1-a)*b*x12 + a*b*x22;
-  *len_max_error = vnl_math::max(
-    vnl_math::max((double)x11, (double)x21),
-    vnl_math::max((double)x12, (double)x22)
-    ) - vnl_math::min(
-    vnl_math::min((double)x11, (double)x21),
-    vnl_math::min((double)x12,(double)x22)
+  *len_max_error = std::max(
+    std::max((double)x11, (double)x21),
+    std::max((double)x12, (double)x22)
+    ) - std::min(
+    std::min((double)x11, (double)x21),
+    std::min((double)x12,(double)x22)
     );
 
   return;
@@ -823,7 +821,7 @@ bvgl_eulerspiral_optimization_function(unsigned int number_of_unknowns,
                                        UseGradient g):
 vnl_least_squares_function(number_of_unknowns, number_of_residuals, g)
 {
-  this->es_ = 0;
+  this->es_ = VXL_NULLPTR;
 }
 
 //: Main function for optimization

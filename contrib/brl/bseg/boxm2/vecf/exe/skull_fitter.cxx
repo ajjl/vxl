@@ -15,13 +15,10 @@ int main(int argc, char ** argv)
 
   arglist.parse(argc, argv, false);
   vcl_string show_model_str = show_model_arg();
-  bool show_model = show_model_str == "true";
 
   vcl_string non_lin_str = non_lin_arg();
-  bool do_non_lin = non_lin_str == "true";
 
   vcl_string dlib_str = dlib_arg();
-  bool from_dlib = dlib_str == "true";
 
   vcl_string base_dir = base_dir_path();
 
@@ -61,9 +58,19 @@ int main(int argc, char ** argv)
   vcl_string source_path = base_dir + "skull/skull-top-2x-r-zeroaxis-samp-1.0-r35-norm.txt";
   vcl_string target_path = base_dir + id + "/" + id + "_trans_skull.txt";
   good = fs.transform_skull(source_path, target_path);
+  if(!good){
+    vcl_cout << "ERROR: invalid path given to transform_skull: " << __FILE__ << __LINE__ << vcl_endl;
+    return -1;
+  }
+
   source_path = base_dir + "skull/mandible-2x-zero-samp-1.0-r35-norm.txt";
   target_path = base_dir + id + "/" + id + "_trans_mandible.txt";
   good = fs.transform_skull(source_path, target_path);
+  if(!good){
+    vcl_cout << "ERROR: invalid path given to transform_skull: " << __FILE__ << __LINE__ << vcl_endl;
+    return -1;
+  }
+
   return 0;
 }
 

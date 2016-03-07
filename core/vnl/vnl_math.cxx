@@ -7,6 +7,12 @@
 
 #include "vnl_math.h"
 #include <vxl_config.h>
+#include <vcl_limits.h>
+
+#if  __cplusplus >= 201103L
+// Nothing to do for isnan,isfinite,isinf,isnormal
+// or hypot here
+#else
 
 #if defined(VCL_VC) || defined(__MINGW32__)
 // I don't think we need this, because <ieeefp.h> is available -- fsm
@@ -74,15 +80,7 @@ namespace vnl_math
  bool isnan(double x) { return std::isnan(x); }
  //: Return true iff x is "Not a Number"
  bool isnan(long double x) { return std::isnan(x); }
-#elif defined(VCL_ICC)
-#include <mathimf.h> // defines isnanf, isnan, and isnanl
-//: Return true iff x is "Not a Number"
-bool isnan(float x) { return isnanf(x) != 0; }
-//: Return true iff x is "Not a Number"
-bool isnan(double x) { return isnan(x) != 0; }
-//: Return true iff x is "Not a Number"
-bool isnan(long double x) { return isnanl(x) != 0; }
-#elif !defined(VNL_HAS_NO_FINITE) && !defined(__alpha__) && !defined(VCL_WIN32)
+#elif !defined(VNL_HAS_NO_FINITE) && !defined(VCL_WIN32)
 //: Return true iff x is "Not a Number"
 bool isnan(float x) { return x != x; } // causes "floating exception" on alpha
 //: Return true iff x is "Not a Number"
@@ -175,11 +173,11 @@ bool isinf(double x) { return std::isinf(x); }
 bool isinf(long double x) { return std::isinf(x); }
 #elif !defined(VNL_HAS_NO_FINITE)
 //: Return true if x is inf
-bool isinf(float x) { return ! ::isfinite(x) && ! ::isnan(x); }
+bool isinf(float x) { return ! vnl_math::isfinite(x) && ! vnl_math::isnan(x); }
 //: Return true if x is inf
-bool isinf(double x) { return ! ::isfinite(x) && ! ::isnan(x); }
+bool isinf(double x) { return ! vnl_math::isfinite(x) && ! vnl_math::isnan(x); }
 //: Return true if x is inf
-bool isinf(long double x) { return ! ::isfinite(x) && ! ::isnan(x); }
+bool isinf(long double x) { return ! vnl_math::isfinite(x) && ! vnl_math::isnan(x); }
 #else
 // Assume IEEE floating point number representation
 bool isinf(float x) {return(bMe(&x,0x7f800000L,sz_f)&&!bMp(&x,0x007fffffL,sz_f))||bMp(&x,0x7fffffffL,sz_f)==0x7f7fffffL;}
@@ -209,40 +207,6 @@ bool isnormal(long double x) { return vnl_math::isfinite(x) && (x != 0.0 ); }
 #endif
 
 } // end namespace vnl_math
-
-//----------------------------------------------------------------------
-
-//: Type-accessible infinities for use in templates.
-template <class T> T vnl_huge_val(T);
-#ifndef VCL_ICC_81
-double vnl_huge_val(double) { return HUGE_VAL; }
-float  vnl_huge_val(float)  { return (float)HUGE_VAL; }
-#else
-// workaround ICC warning that 0x1.0p2047 cannot be represented exactly.
-double vnl_huge_val(double) { return // 2^2047
-16158503035655503650357438344334975980222051334857742016065172713762\
-32756943394544659860070576145673184435898046094900974705977957524546\
-05475440761932241415603154386836504980458750988751948260533980288191\
-92033784138396109321309878080919047169238085235290822926018152521443\
-78794577053290430377619956196519276095716669483417121034248739328228\
-47474280880176631610290389028296655130963542301570751292964320885583\
-62971801859230928678799175576150822952201848806616643615613562842355\
-41010486257855086346566173483927129032834896752299863417649931910776\
-25831947186677718010677166148023226592393024760740967779268055297981\
-15328.0; }
-float  vnl_huge_val(float)  { return // 2^255
-57896044618658097711785492504343953926634992332820282019728792003956\
-564819968.0f; }
-#endif
-#ifdef _INT_64BIT_
-long int vnl_huge_val(long int) { return 0x7fffffffffffffffL; }
-int    vnl_huge_val(int)    { return 0x7fffffffffffffffL; }
-#else
-int    vnl_huge_val(int)    { return 0x7fffffff; }
-#endif
-short  vnl_huge_val(short)  { return 0x7fff; }
-char   vnl_huge_val(char)   { return 0x7f; }
-
 
 //----------------------------------------------------------------------
 namespace vnl_math
@@ -304,6 +268,24 @@ long double hypot(long double x, long double y)
 }
 } // end namespace vnl_math
 
+#endif
+
+//----------------------------------------------------------------------
+
+//: Type-accessible infinities for use in templates.
+template <class T> T vnl_huge_val(T);
+float  vnl_huge_val(float)  { return vcl_numeric_limits<float>::infinity(); }
+double  vnl_huge_val(double)  { return vcl_numeric_limits<double>::infinity(); }
+long double vnl_huge_val(long double) { return vcl_numeric_limits<long double>::infinity(); }
+
+#ifdef _INT_64BIT_
+long int vnl_huge_val(long int) { return 0x7fffffffffffffffL; }
+int    vnl_huge_val(int)    { return 0x7fffffffffffffffL; }
+#else
+int    vnl_huge_val(int)    { return 0x7fffffff; }
+#endif
+short  vnl_huge_val(short)  { return 0x7fff; }
+char   vnl_huge_val(char)   { return 0x7f; }
 
 
 //----------------------------------------------------------------------

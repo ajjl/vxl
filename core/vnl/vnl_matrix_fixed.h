@@ -116,7 +116,7 @@ class vnl_matrix_fixed
   // vnl_matrix, so that algorithms can template over the matrix type
   // itself.  It is illegal to call this constructor without
   // <tt>n==num_rows</tt> and <tt>m==num_cols</tt>.
-  vnl_matrix_fixed( unsigned n, unsigned m )
+  vnl_matrix_fixed( unsigned VXL_USED_IN_DEBUG(n), unsigned VXL_USED_IN_DEBUG(m) )
   {
     assert( n == num_rows && m == num_cols );
   }
@@ -179,29 +179,47 @@ class vnl_matrix_fixed
 
 // Basic 2D-Array functionality-------------------------------------------
 
-  //: Return number of rows
-  unsigned rows()    const { return num_rows; }
-
-  //: Return number of columns
-  // A synonym for cols()
-  unsigned columns()  const { return num_cols; }
-
-  //: Return number of columns
-  // A synonym for columns()
-  unsigned cols()    const { return num_cols; }
-
-  //: Return number of elements
+  //: Return the total number of elements stored by the matrix.
   // This equals rows() * cols()
-  unsigned size()    const { return num_rows*num_cols; }
+  inline unsigned int size() const { return num_rows*num_cols; }
+
+  //: Return the number of rows.
+  inline unsigned int rows() const { return num_rows; }
+
+  //: Return the number of columns.
+  // A synonym for columns().
+  inline unsigned int cols() const { return num_cols; }
+
+  //: Return the number of columns.
+  // A synonym for cols().
+  inline unsigned int columns() const { return num_cols; }
 
   //: set element
-  void put (unsigned r, unsigned c, T const& v) { (*this)(r,c) = v; }
+  inline void put (unsigned r, unsigned c, T const& v)
+  {
+#if VNL_CONFIG_CHECK_BOUNDS
+    if (r >= num_rows)                // If invalid size specified
+      vnl_error_matrix_row_index("put", r); // Raise exception
+    if (c >= num_cols)                // If invalid size specified
+      vnl_error_matrix_col_index("put", c); // Raise exception
+#endif
+    this->data_[r][c] = v;
+  }
+
+  //: get element
+  inline T get (unsigned r, unsigned c) const
+  {
+#if VNL_CONFIG_CHECK_BOUNDS
+    if (r >= num_rows)                // If invalid size specified
+      vnl_error_matrix_row_index("get", r); // Raise exception
+    if (c >= num_cols)                // If invalid size specified
+      vnl_error_matrix_col_index("get", c); // Raise exception
+#endif
+    return this->data_[r][c];
+  }
 
   //: set element, and return *this
   vnl_matrix_fixed& set (unsigned r, unsigned c, T const& v) { (*this)(r,c) = v; return *this; }
-
-  //: get element
-  T    get (unsigned r, unsigned c) const { return (*this)(r,c); }
 
   //: return pointer to given row
   // No boundary checking here.
@@ -606,7 +624,7 @@ class vnl_matrix_fixed
 
   //: abort if size is not as expected
   // This function does or tests nothing if NDEBUG is defined
-  void assert_size(unsigned nr_rows, unsigned nr_cols) const
+  void assert_size(unsigned VXL_USED_IN_DEBUG(nr_rows), unsigned VXL_USED_IN_DEBUG(nr_cols) ) const
   {
 #ifndef NDEBUG
     assert_size_internal(nr_rows, nr_cols);
@@ -1013,6 +1031,6 @@ template <class T, unsigned m, unsigned n>
 vnl_matrix_fixed<T,m,n> outer_product(vnl_vector_fixed<T,m> const& a, vnl_vector_fixed<T,n> const& b);
 
 #define VNL_MATRIX_FIXED_INSTANTIATE(T, M, N) \
-extern "please include vnl/vnl_matrix_fixed.txx instead"
+extern "please include vnl/vnl_matrix_fixed.hxx instead"
 
 #endif // vnl_matrix_fixed_h_

@@ -53,7 +53,7 @@ static void test_bvxm_roi_init_process()
   brdb_value_sptr v3 = new brdb_value_t<unsigned>(0);
 
   bool good = bprb_batch_process_manager::instance()->init_process("bvxmRoiInitProcess");
-  good = bprb_batch_process_manager::instance()->set_params("roi_params.xml");
+  good = good && bprb_batch_process_manager::instance()->set_params("roi_params.xml");
   good = good && bprb_batch_process_manager::instance()->set_input(0, v0);
   good = good && bprb_batch_process_manager::instance()->set_input(1, v1);
   good = good && bprb_batch_process_manager::instance()->set_input(2, v2);
@@ -86,7 +86,7 @@ static void test_bvxm_roi_init_process()
     vcl_cout << "in bprb_batch_process_manager::set_input_from_db(.) -"
              << " didn't get value\n";
   }
-  bool non_null = (value != 0);
+  bool non_null = (value != VXL_NULLPTR);
   TEST("camera output non-null", non_null ,true);
 
   brdb_query_aptr Q_img = brdb_query_comp_new("id", brdb_query::EQ, id_img);
@@ -101,7 +101,7 @@ static void test_bvxm_roi_init_process()
     vcl_cout << "in bprb_batch_process_manager::set_input_from_db(.) -"
              << " didn't get value\n";
   }
-  non_null = (value_img != 0);
+  non_null = (value_img != VXL_NULLPTR);
   TEST("camera output non-null", non_null ,true);
 
   brdb_value_t<vil_image_view_base_sptr>* result =

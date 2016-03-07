@@ -1190,30 +1190,6 @@ void test_config()
 #endif
   vcl_cout << vcl_endl;
 
-  vcl_cout << "VCL_ICC_8 ";
-#ifdef VCL_ICC_8
-  vcl_cout << "is set to " << quote(VCL_ICC_8);
-#else
-  vcl_cout << "is not set";
-#endif
-  vcl_cout << vcl_endl;
-
-  vcl_cout << "VCL_ICC_80 ";
-#ifdef VCL_ICC_80
-  vcl_cout << "is set to " << quote(VCL_ICC_80);
-#else
-  vcl_cout << "is not set";
-#endif
-  vcl_cout << vcl_endl;
-
-  vcl_cout << "VCL_ICC_81 ";
-#ifdef VCL_ICC_81
-  vcl_cout << "is set to " << quote(VCL_ICC_81);
-#else
-  vcl_cout << "is not set";
-#endif
-  vcl_cout << vcl_endl;
-
   vcl_cout << "VCL_WIN32 ";
 #ifdef VCL_WIN32
   vcl_cout << "is set to " << quote(VCL_WIN32);
@@ -1398,14 +1374,6 @@ void test_config()
 #endif
   vcl_cout << vcl_endl;
 
-  vcl_cout << "__ECC ";
-#ifdef __ECC
-  vcl_cout << "is set to " << quote(__ECC);
-#else
-  vcl_cout << "is not set";
-#endif
-  vcl_cout << vcl_endl;
-
   vcl_cout << "__INTEL_COMPILER ";
 #ifdef __INTEL_COMPILER
   vcl_cout << "is set to " << quote(__INTEL_COMPILER);
@@ -1457,14 +1425,6 @@ void test_config()
   vcl_cout << "_WIN32 ";
 #ifdef _WIN32
   vcl_cout << "is set to " << quote(_WIN32);
-#else
-  vcl_cout << "is not set";
-#endif
-  vcl_cout << vcl_endl;
-
-  vcl_cout << "__alpha__ ";
-#ifdef __alpha__
-  vcl_cout << "is set to " << quote(__alpha__);
 #else
   vcl_cout << "is not set";
 #endif

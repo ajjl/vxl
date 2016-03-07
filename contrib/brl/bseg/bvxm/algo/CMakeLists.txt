@@ -5,15 +5,15 @@ include_directories( ${BRL_INCLUDE_DIR}/bseg/bvxm )
 
 set(bvxm_algo_sources
     bvxm_merge_mog.h     bvxm_merge_mog.cxx
-    bvxm_mog_norm.h      bvxm_mog_norm.txx
+    bvxm_mog_norm.h      bvxm_mog_norm.hxx
     bvxm_boxm_convert.h
    )
 
 aux_source_directory(Templates bvxm_algo_sources)
 
-add_library( bvxm_algo ${bvxm_algo_sources})
+vxl_add_library( LIBNAME bvxm_algo LIBSRCS ${bvxm_algo_sources})
 
-target_link_libraries( bvxm_algo bsta bvxm_grid_io boxm_util vnl vgl)
+target_link_libraries( bvxm_algo bsta bvxm_grid_io boxm_util ${VXL_LIB_PREFIX}vnl ${VXL_LIB_PREFIX}vgl)
 
 add_subdirectory(pro)
 

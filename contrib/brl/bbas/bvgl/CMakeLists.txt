@@ -17,10 +17,10 @@ set(bvgl_sources
  bvgl_changes.h      bvgl_changes.cxx
  bvgl_changes_sptr.h
  bvgl_point_3d_cmp.h
- bvgl_triangle_interpolation_iterator.h  bvgl_triangle_interpolation_iterator.txx
- bvgl_intersection.h                     bvgl_intersection.txx
- bvgl_triangle_3d.h                      bvgl_triangle_3d.txx
- bvgl_volume_of_intersection.h           bvgl_volume_of_intersection.txx
+ bvgl_triangle_interpolation_iterator.h  bvgl_triangle_interpolation_iterator.hxx
+ bvgl_intersection.h                     bvgl_intersection.hxx
+ bvgl_triangle_3d.h                      bvgl_triangle_3d.hxx
+ bvgl_volume_of_intersection.h           bvgl_volume_of_intersection.hxx
  bvgl_ray_pyramid.h                      bvgl_ray_pyramid.cxx
  bvgl_param_curve.h                      # EMPTY FILE bvgl_param_curve.cxx
  bvgl_cross_section.h                    bvgl_cross_section.cxx
@@ -41,10 +41,8 @@ if(EXPAT_FOUND)
 endif()
 
 #Create BVGL library
-add_library(bvgl ${bvgl_sources})
-install_targets(/lib bvgl)
-INSTALL_NOBASE_HEADER_FILES(/include/vxl/contrib/brl/bbas/bvgl ${bvgl_sources})
-target_link_libraries(bvgl bvrml vsol vgl_algo vgl_io vgl vnl_algo vnl vil vbl)
+vxl_add_library( LIBNAME bvgl LIBSRCS ${bvgl_sources})
+target_link_libraries(bvgl bvrml vsol ${VXL_LIB_PREFIX}vgl_algo ${VXL_LIB_PREFIX}vgl_io ${VXL_LIB_PREFIX}vgl ${VXL_LIB_PREFIX}vnl_algo ${VXL_LIB_PREFIX}vnl ${VXL_LIB_PREFIX}vil ${VXL_LIB_PREFIX}vbl)
 if(EXPAT_FOUND)
 target_link_libraries(bvgl expatpp)
 endif()

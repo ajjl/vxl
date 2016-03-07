@@ -105,7 +105,7 @@ void boxm2_vecf_appearance_extractor::extract_head_appearance(){
                 target_blk->data_index( fwd_scaled_cell_center, target_data_idx);
                 float alpha = target_alpha_data[target_data_idx];
                 float src_prob = static_cast<float>(1.0 - vcl_exp( - source_alpha_data[data_idx] * source_side_len));
-                double prob = static_cast<float>(1.0 - vcl_exp(-alpha*side_len));
+                //double prob = static_cast<float>(1.0 - vcl_exp(-alpha*side_len));
                 const double prob_thresh = 0.0;
 
                 if (src_prob >= prob_thresh) {
@@ -133,7 +133,7 @@ void boxm2_vecf_appearance_extractor::extract_orbit_appearance(){
   vcl_vector<boxm2_block_id> target_blocks = target_scene_->get_block_ids();
   if (target_blocks.size()>1){
     vcl_cout<< "visibility info cannot be used in current implementation if scene contains more than one block"<<vcl_endl;
-    current_vis_score_ = 0;
+    current_vis_score_ = VXL_NULLPTR;
   }else{
     boxm2_data_base* vis_score_db = boxm2_cache::instance()->get_data_base(target_scene_,target_blocks[0],boxm2_data_traits<BOXM2_VIS_SCORE>::prefix(head_model_.color_apm_id_));
     current_vis_score_ = reinterpret_cast<vis_score_t*>(vis_score_db->data_buffer());

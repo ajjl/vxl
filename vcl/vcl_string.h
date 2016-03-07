@@ -7,8 +7,8 @@
 #include "iso/vcl_string.h"
 
 #define VCL_BASIC_STRING_INSTANTIATE \
-extern "include vcl_string.txx instead"
+extern "include vcl_string.hxx instead"
 
-#include "vcl_string.txx"
+#include "vcl_string.hxx"
 
 #endif // vcl_string_h_
